@@ -1,5 +1,6 @@
 # It has a VPC
 # It has subnets (public and private)
+# It has a Internet Gateway
 # It has a NAT gateway
 # It has a Elastic IP address for NAT gateway
 # It has a public route table
@@ -8,6 +9,7 @@
 # It has a private route
 # It has a public route table association
 # It has a private route table association
+
 
 #vpc resource block for creating vpc
 resource "aws_vpc" "this" {
