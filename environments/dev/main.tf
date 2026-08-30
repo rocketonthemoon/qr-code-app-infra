@@ -31,3 +31,12 @@ module "networking" {
   number_of_private_subnets = var.number_of_private_subnets
   availability_zones        = var.availability_zones
 }
+
+# alb infrastructure
+module "alb" {
+  source         = "../../modules/alb"
+  environment    = var.environment
+  project        = var.project
+  public_subnets = module.networking.networking_public_subnet_ids
+  vpc_id         = module.networking.networking_vpc_id
+}

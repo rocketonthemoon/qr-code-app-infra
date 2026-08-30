@@ -32,3 +32,13 @@ output "dev_networking_elastic_ip_address" {
   value       = module.networking.networking_elastic_ip_address
   description = "Elastic IP address of NAT gateway"
 }
+
+output "dev_alb_dns_name" {
+  value       = module.alb.alb_dns_name
+  description = "DNS name of the ALB"
+}
+
+output "dev_alb_tg_arns" {
+  value       = module.alb.alb_tg_arns
+  description = "ARN of the ALB target group"
+}
