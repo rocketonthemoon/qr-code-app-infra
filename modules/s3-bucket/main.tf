@@ -1,3 +1,4 @@
+# S3 bucket decleration
 resource "aws_s3_bucket" "this" {
   bucket        = var.bucket_name
   force_destroy = var.force_destroy
@@ -9,6 +10,7 @@ resource "aws_s3_bucket" "this" {
   }, var.tags)
 }
 
+# Enable versioning for s3 bucket
 resource "aws_s3_bucket_versioning" "this" {
   bucket = aws_s3_bucket.this.id
   versioning_configuration {
@@ -17,7 +19,6 @@ resource "aws_s3_bucket_versioning" "this" {
 }
 
 // dont need it , but it's good practice to mention it explicitly
-
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   bucket = aws_s3_bucket.this.id
 
@@ -28,6 +29,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   }
 }
 
+# Block public access for s3 bucket
 resource "aws_s3_bucket_public_access_block" "this" {
   bucket = aws_s3_bucket.this.id
 
