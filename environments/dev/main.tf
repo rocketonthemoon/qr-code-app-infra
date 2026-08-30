@@ -11,8 +11,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-#custom aws s3 module usage
-
+#s3 bucket creation
 # module "aws_s3_bucket" {
 #     source = "../../modules/s3-bucket"
 #     bucket_name = "${var.project}-${var.environment}-s3-bucket"
@@ -22,6 +21,7 @@ provider "aws" {
 #     force_destroy = true
 # }
 
+# networking infrastructure
 module "networking" {
   source                    = "../../modules/networking"
   vpc_cidr_block            = var.vpc_cidr_block
