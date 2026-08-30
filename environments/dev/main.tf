@@ -12,14 +12,14 @@ provider "aws" {
 }
 
 #s3 bucket creation
-# module "aws_s3_bucket" {
-#     source = "../../modules/s3-bucket"
-#     bucket_name = "${var.project}-${var.environment}-s3-bucket"
-#     environment = var.environment
-#     project = var.project
-#     versioning_enabled = false
-#     force_destroy = true
-# }
+module "s3_bucket" {
+  source             = "../../modules/s3-bucket"
+  bucket_name        = "${var.project}-${var.environment}-s3-bucket"
+  environment        = var.environment
+  project            = var.project
+  versioning_enabled = false
+  force_destroy      = true
+}
 
 # networking infrastructure
 module "networking" {
