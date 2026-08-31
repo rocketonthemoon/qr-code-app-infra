@@ -3,7 +3,17 @@ output "alb_dns_name" {
   value       = aws_lb.application_load_balancer.dns_name
 }
 
-output "alb_tg_arns" {
-  description = "The ARN of the ALB target group"
-  value       = [aws_lb_target_group.app-tg.arn, aws_lb_target_group.api-tg.arn]
+output "app_tg_arn" {
+  description = "The ARN of the ALB target group for app"
+  value       = aws_lb_target_group.app-tg.arn
+}
+
+output "api_tg_arn" {
+  description = "The ARN of the ALB target group for API"
+  value       = aws_lb_target_group.api-tg.arn
+}
+
+output "alb_sg_id" {
+  description = "The ID of the ALB security group"
+  value       = aws_security_group.alb-sg.id
 }
