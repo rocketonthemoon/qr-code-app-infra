@@ -36,3 +36,53 @@ variable "availability_zones" {
   type        = list(string)
   default     = ["eu-north-1a", "eu-north-1b"]
 }
+
+variable "app_container_image" {
+  description = "Application container image"
+  type        = string
+}
+
+variable "app_container_port" {
+  description = "Application container port"
+  type        = number
+}
+
+variable "api_container_image" {
+  description = "API container image"
+  type        = string
+}
+
+variable "api_container_port" {
+  description = "API container port"
+  type        = number
+}
+
+variable "app_cpu_size" {
+  description = "Application ECS task CPU size"
+  type        = number
+}
+
+variable "app_memory_size" {
+  description = "Application ECS task memory size"
+  type        = number
+}
+
+variable "api_cpu_size" {
+  description = "API ECS task CPU size"
+  type        = number
+}
+
+variable "api_memory_size" {
+  description = "API ECS task memory size"
+  type        = number
+}
+
+variable "registry_username" {
+  description = "Registry username"
+  type        = string
+}
+
+variable "registry_password" {
+  description = "Registry password"
+  type        = string
+}

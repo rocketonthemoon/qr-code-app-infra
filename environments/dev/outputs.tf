@@ -38,7 +38,42 @@ output "dev_alb_dns_name" {
   description = "DNS name of the ALB"
 }
 
-output "dev_alb_tg_arns" {
-  value       = module.alb.alb_tg_arns
+output "dev_app_tg_arn" {
+  value       = module.alb.app_tg_arn
   description = "ARN of the ALB target group"
+}
+
+output "dev_api_tg_arn" {
+  value       = module.alb.api_tg_arn
+  description = "ARN of the ALB target group"
+}
+
+output "dev_iam_ecs_task_role_arn" {
+  value       = module.iam.ecs_task_role_arn
+  description = "ARN of the ECS task role"
+}
+
+output "dev_iam_ecs_execution_role_arn" {
+  value       = module.iam.ecs_execution_role_arn
+  description = "ARN of the ECS execution role"
+}
+
+output "dev_ecs_cluster_arn" {
+  value       = module.ecs.ecs_cluster_arn
+  description = "ARN of the ECS cluster"
+}
+
+output "dev_ecs_service_app_arn" {
+  value       = module.ecs.ecs_service_app_arn
+  description = "ARN of the ECS app service"
+}
+
+output "dev_ecs_service_api_arn" {
+  value       = module.ecs.ecs_service_api_arn
+  description = "ARN of the ECS api service"
+}
+
+output "dev_secretmanager_creds_arn" {
+  value       = module.secretmanager.creds_arn
+  description = "ARN of the credentials secret"
 }
