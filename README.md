@@ -4,6 +4,10 @@ Automated AWS infrastructure deployment for the **QR Code Generator Application*
 
 ---
 
+## App code
+
+- https://github.com/rocketonthemoon/qr-code-app
+
 ## Overview
 
 This repository contains modularized Infrastructure-as-Code (IaC) written in Terraform to provision a high-availability, containerized microservices architecture on AWS.
