@@ -43,11 +43,6 @@ output "dev_app_tg_arn" {
   description = "ARN of the ALB target group"
 }
 
-output "dev_api_tg_arn" {
-  value       = module.alb.api_tg_arn
-  description = "ARN of the ALB target group"
-}
-
 output "dev_iam_ecs_task_role_arn" {
   value       = module.iam.ecs_task_role_arn
   description = "ARN of the ECS task role"

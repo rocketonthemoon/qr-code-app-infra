@@ -11,8 +11,8 @@ locals {
 
   app_env_vars_dev = [
     for k, v in {
-      "NEXT_PRIVATE_API_URL" = "http://${module.alb.alb_dns_name}"
-      "PORT"                 = var.app_container_port
+      "INTERNAL_API_URL" = "http://api.${var.project}-${var.environment}-service-connect-namespace:${var.api_container_port}"
+      "PORT"             = var.app_container_port
       } : {
       name  = k
       value = tostring(v)

@@ -8,11 +8,6 @@ output "app_tg_arn" {
   value       = aws_lb_target_group.app-tg.arn
 }
 
-output "api_tg_arn" {
-  description = "The ARN of the ALB target group for API"
-  value       = aws_lb_target_group.api-tg.arn
-}
-
 output "alb_sg_id" {
   description = "The ID of the ALB security group"
   value       = aws_security_group.alb-sg.id

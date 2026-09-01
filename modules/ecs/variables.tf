@@ -84,11 +84,6 @@ variable "app_tg_arn" {
   description = "ARN of the ALB target group for app"
 }
 
-variable "api_tg_arn" {
-  type        = string
-  description = "ARN of the ALB target group for API"
-}
-
 variable "creds_arn" {
   type        = string
   description = "ARN of the credentials secret"

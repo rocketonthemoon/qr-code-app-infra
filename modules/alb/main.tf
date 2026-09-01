@@ -85,41 +85,6 @@ resource "aws_lb_target_group" "app-tg" {
   })
 }
 
-# target group for backend API
-# port 8000
-# health check on /api/health
-# expected response code 200
-# interval 30 seconds
-# timeout 5 seconds
-# healthy threshold 3
-# unhealthy threshold 3
-resource "aws_lb_target_group" "api-tg" {
-  name        = "${var.project}-${var.environment}-api-tg"
-  target_type = "ip"
-  port        = var.api_container_port
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-
-  health_check {
-    enabled             = true
-    healthy_threshold   = 3
-    interval            = 30
-    timeout             = 5
-    matcher             = "200"
-    path                = "/api/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    unhealthy_threshold = 3
-  }
-
-  tags = merge(var.tags, {
-    Name        = "${var.project}-${var.environment}-api-tg"
-    Environment = var.environment
-    Project     = var.project
-    ManagedBy   = "Terraform"
-  })
-}
-
 # listener for HTTP port 80
 resource "aws_lb_listener" "http-listener" {
   load_balancer_arn = aws_lb.application_load_balancer.arn
@@ -146,23 +111,6 @@ resource "aws_lb_listener" "http-listener" {
 #   }
 # }
 
-# path based HTTP routing for API
-resource "aws_lb_listener_rule" "api-http-rule" {
-  listener_arn = aws_lb_listener.http-listener.arn
-  priority     = 1
-
-  condition {
-    path_pattern {
-      values = ["/api/*", "/docs"]
-    }
-  }
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.api-tg.arn
-  }
-}
-
 # path based HTTP routing for frontend app
 resource "aws_lb_listener_rule" "app-http-rule" {
   listener_arn = aws_lb_listener.http-listener.arn
@@ -179,23 +127,6 @@ resource "aws_lb_listener_rule" "app-http-rule" {
     target_group_arn = aws_lb_target_group.app-tg.arn
   }
 }
-
-# path based HTTPS routing for API
-# resource "aws_lb_listener_rule" "api-https-rule" {
-#   listener_arn = aws_lb_listener.https-listener.arn
-#   priority     = 1
-
-#   condition {
-#     path_pattern {
-#       values = ["/api/*"]
-#     }
-#   }
-
-#   action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.api-tg.arn
-#   }
-# }
 
 # path based HTTPS routing for frontend app
 # resource "aws_lb_listener_rule" "app-https-rule" {

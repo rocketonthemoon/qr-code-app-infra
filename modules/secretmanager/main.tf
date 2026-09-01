@@ -1,13 +1,18 @@
 resource "aws_secretsmanager_secret" "creds" {
-  name        = "${var.project}-${var.environment}-creds1"
+  name        = "${var.project}-${var.environment}-creds2"
   description = "credentials for ECS tasks to pull images from registry"
 
   tags = merge(var.tags, {
-    Name        = "${var.project}-${var.environment}-creds1"
+    Name        = "${var.project}-${var.environment}-creds2"
     Environment = var.environment
     Project     = var.project
     ManagedBy   = "Terraform"
   })
+
+  lifecycle {
+
+  }
+
 }
 
 resource "aws_secretsmanager_secret_version" "creds" {

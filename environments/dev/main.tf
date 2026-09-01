@@ -71,7 +71,6 @@ module "ecs" {
   ecs_task_role_arn      = module.iam.ecs_task_role_arn
   alb_sg_id              = module.alb.alb_sg_id
   app_tg_arn             = module.alb.app_tg_arn
-  api_tg_arn             = module.alb.api_tg_arn
   creds_arn              = module.secretmanager.creds_arn
   api_env_vars           = local.api_env_vars_dev
   app_env_vars           = local.app_env_vars_dev

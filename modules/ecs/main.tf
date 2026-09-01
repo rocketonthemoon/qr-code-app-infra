@@ -1,5 +1,5 @@
 // ecs tasks security group
-// allow traffic from alb on ports 3000 and 8000 from private subnets
+// allow traffic from alb to access ports 3000 from private subnets
 resource "aws_security_group" "ecs_tasks_security_group" {
   name        = "${var.project}-${var.environment}-ecs-tasks-sg"
   description = "Security group for ECS tasks"
@@ -14,11 +14,11 @@ resource "aws_security_group" "ecs_tasks_security_group" {
   }
 
   ingress {
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
-    description     = "Allow all inbound traffic on port 8000 from alb"
-    security_groups = [var.alb_sg_id]
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    description = "Allow internal traffic on port 8000 between ECS tasks via service connect"
+    self        = true
   }
 
   egress {
@@ -38,6 +38,18 @@ resource "aws_security_group" "ecs_tasks_security_group" {
   })
 }
 
+resource "aws_service_discovery_http_namespace" "service-connect-namespace" {
+  name        = "${var.project}-${var.environment}-service-connect-namespace"
+  description = "Service connect namespace for ECS tasks"
+
+  tags = merge(var.tags, {
+    Name        = "${var.project}-${var.environment}-service-connect-namespace"
+    Environment = var.environment
+    Project     = var.project
+    ManagedBy   = "Terraform"
+  })
+}
+
 // ecs cluster creation
 resource "aws_ecs_cluster" "cluster" {
   name = "${var.project}-${var.environment}-ecs-cluster"
@@ -48,6 +60,11 @@ resource "aws_ecs_cluster" "cluster" {
     Project     = var.project
     ManagedBy   = "Terraform"
   })
+
+  service_connect_defaults {
+    namespace = aws_service_discovery_http_namespace.service-connect-namespace.arn
+  }
+
 }
 
 // logging configuration
@@ -129,6 +146,7 @@ resource "aws_ecs_task_definition" "api-task" {
       environment = var.api_env_vars
       portMappings = [
         {
+          name          = "api-port"
           containerPort = var.api_container_port
           hostPort      = var.api_container_port
         }
@@ -169,6 +187,11 @@ resource "aws_ecs_service" "app-service" {
     container_port   = var.app_container_port
   }
 
+  service_connect_configuration {
+    enabled   = true
+    namespace = aws_service_discovery_http_namespace.service-connect-namespace.arn
+  }
+
   tags = merge(var.tags, {
     Name        = "${var.project}-${var.environment}-app-service"
     Environment = var.environment
@@ -191,11 +214,17 @@ resource "aws_ecs_service" "api-service" {
     assign_public_ip = false
   }
 
-  // attaching alb target group for API
-  load_balancer {
-    target_group_arn = var.api_tg_arn
-    container_name   = "api"
-    container_port   = var.api_container_port
+  service_connect_configuration {
+    enabled   = true
+    namespace = aws_service_discovery_http_namespace.service-connect-namespace.arn
+
+    service {
+      port_name      = "api-port"
+      discovery_name = "api" # Resolves to http://api.${aws_service_connect_namespace.service-connect-namespace.name}:8000 inside the cluster
+      client_alias {
+        port = var.api_container_port
+      }
+    }
   }
 
   tags = merge(var.tags, {
