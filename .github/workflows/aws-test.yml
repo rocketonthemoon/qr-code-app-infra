@@ -1,0 +1,29 @@
+name: "Test AWS OIDC Connection"
+
+on:
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+  pull_request:
+    branches: [main]
+
+permissions:
+  id-token: write  # Critical: allows fetching the OIDC JWT token
+  contents: read
+
+jobs:
+  verify-auth:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          audience: sts.amazonaws.com
+          aws-region: ${{ vars.AWS_REGION || 'eu-north-1' }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          role-session-name: GitHubOIDCTestSession
+
+      - name: Verify Caller Identity
+        run: |
+          aws sts get-caller-identity
