@@ -21,7 +21,7 @@ jobs:
         with:
           audience: sts.amazonaws.com
           aws-region: ${{ vars.AWS_REGION || 'eu-north-1' }}
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: GitHubOIDCTestSession
 
       - name: Verify Caller Identity
