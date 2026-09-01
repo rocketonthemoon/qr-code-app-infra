@@ -1,0 +1,27 @@
+// --- registry credentials ---
+registry_username = ""
+registry_password = ""
+
+// --- account specific variables ---
+aws_region = ""
+
+// --- project specific variables ---
+environment = ""
+project     = ""
+
+// --- ecs variables ---
+app_cpu_size        = 
+app_memory_size     = 
+api_cpu_size        = 
+api_memory_size     = 
+app_container_image = ""
+api_container_image = ""
+app_container_port  = 
+api_container_port  = 
+
+// --- networking variables ---
+vpc_cidr_block            = ""
+number_of_public_subnets  = 
+number_of_private_subnets = 
+availability_zones        = ["", ""]
+
